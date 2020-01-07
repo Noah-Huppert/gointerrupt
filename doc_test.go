@@ -9,7 +9,7 @@ import (
 
 // Demonstrates how a CtxPair can be used to gracefully shutdown
 // a net/http.Server.
-func Example_CtxPair() {
+func ExampleCtxPair() {
 	// Initialize a go interrupt context pair
 	ctxPair := NewCtxPair(context.Background())
 
@@ -44,7 +44,7 @@ func Example_CtxPair() {
 
 // Shows how to setup a context.Context to cancel when custom signals are
 // received by the process.
-func Example_SignalCtx() {
+func ExampleSignalCtx() {
 	// Setup a context to cancel when a kill signal is sent to the process
 	ctx := NewSignalCtx(context.Background(), syscall.SIGKILL)
 
