@@ -49,8 +49,8 @@ func main() {
 	}
 
 	// Run HTTP server
+	wg.Add(1)
 	go func() {
-		wg.Add(1)
 		if err := server.ListenAndServe(); err != http.ErrServerClosed {
 			panic(err)
 		}
