@@ -13,7 +13,7 @@ func NewCtx() (context.Context, context.CancelFunc) {
 	ctx, cancelCtx := context.WithCancel(context.Background())
 
 	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(sigs, os.Interrupt)
 
 	go func() {
 		<-sigs

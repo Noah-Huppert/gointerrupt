@@ -5,4 +5,4 @@ Easily handle interrupts via context.
 - [Overview](#overview)
 
 # Overview
-Handles signals and cancels contexts.
+Makes it easy to gracefully shutdown programs.
