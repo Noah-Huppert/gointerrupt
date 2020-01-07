@@ -24,7 +24,8 @@ func ExampleCtxPair() {
 	// Run HTTP server
 	wg.Add(1)
 	go func() {
-		if err := server.ListenAndServe(); err != http.ErrServerClosed {
+		if err := server.ListenAndServe(); err != nil &&
+			err != http.ErrServerClosed {
 			panic(err)
 		}
 		wg.Done()
