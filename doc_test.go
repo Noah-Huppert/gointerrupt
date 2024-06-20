@@ -2,9 +2,11 @@ package gointerrupt
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"sync"
 	"syscall"
+	"time"
 )
 
 // Demonstrates how a CtxPair can be used to gracefully shutdown
@@ -51,4 +53,22 @@ func ExampleSignalCtx() {
 
 	// Context will cancel when SIGKILL received
 	<-ctx.Ctx().Done()
+}
+
+// Shows how to manually cancel a context.
+func ExampleSignalCtx_Cancel() {
+	// Setup a context which will cancel when the SIGKILL signal is received
+	ctx := NewSignalCtx(context.Background(), syscall.SIGKILL)
+
+	// Create a timer which will trigger in 10 seconds
+	timer := time.NewTimer(time.Second * 10)
+
+	go func() {
+		<-timer.C
+		log.Println("Timer went off! Cancelling context")
+		ctx.Cancel()
+	}()
+
+	<-ctx.Ctx().Done()
+	log.Println("Context was canceled")
 }

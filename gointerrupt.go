@@ -1,7 +1,7 @@
-// Easily handle signals by canceling a context.
+// Package gointerrupt makes it easily to handle signals by canceling a context.
 //
 // Use CtxPair to handle graceful shutdown of a program. See the example for a
-// farmiliar net/http.Server setup.
+// familiar net/http.Server setup.
 //
 // Use SignalCtx to cancel contexts when custom signals are received.
 package gointerrupt
@@ -56,6 +56,9 @@ func (pair CtxPair) Harsh() context.Context {
 type SignalCtx struct {
 	// ctx is the context to be canceled
 	ctx context.Context
+
+	// cancelFn is the function which when called will cancel the context
+	cancelFn func()
 }
 
 // NewSignalCtx creates a SignalCtx for the specified signal
@@ -71,11 +74,17 @@ func NewSignalCtx(bkgrnd context.Context, sig os.Signal) SignalCtx {
 	}()
 
 	return SignalCtx{
-		ctx: ctx,
+		ctx:      ctx,
+		cancelFn: cancelCtx,
 	}
 }
 
 // Ctx returns the context which is canceled when a signal is received.
 func (sigCtx SignalCtx) Ctx() context.Context {
 	return sigCtx.ctx
+}
+
+// Cancel forcefully cancels the context.
+func (sigCtx SignalCtx) Cancel() {
+	sigCtx.cancelFn()
 }
