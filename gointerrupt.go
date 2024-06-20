@@ -46,10 +46,20 @@ func (pair CtxPair) Graceful() context.Context {
 	return pair.gracefullCtx.Ctx()
 }
 
+// GracefulSignalCtx returns the underlying SignalCtx used for the graceful context.
+func (pair CtxPair) GracefulSignalCtx() SignalCtx {
+	return pair.gracefullCtx
+}
+
 // Harsh returns the context which is canceled when graceful shutdown
 // should end.
 func (pair CtxPair) Harsh() context.Context {
 	return pair.harshCtx.Ctx()
+}
+
+// HarshSignalCtx returns the underlying SignalCtx used by the harsh context.
+func (pair CtxPair) HarshSignalCtx() SignalCtx {
+	return pair.harshCtx
 }
 
 // SignalCtx is a context which cancels when a signal is received by the process
